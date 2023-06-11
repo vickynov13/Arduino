@@ -23,7 +23,7 @@ void setup() {
       }
       USE_SERIAL.print(WiFi.localIP());
   
-  ledcAttachPin(18, ledChannel);
+  ledcAttachPin(12, ledChannel);
   ledcSetup(ledChannel, freq, resolution);
 
 }
@@ -35,7 +35,7 @@ void loop() {
         HTTPClient http;
 
         USE_SERIAL.print("[HTTP] begin...\n");
-        http.begin("http://192.168.1.7:8080/status"); //HTTP
+        http.begin("http://chuchuchika.servehttp.com:5000/status"); //HTTP
 
         USE_SERIAL.print("[HTTP] GET...\n");
         int httpCode = http.GET();
@@ -68,6 +68,11 @@ void loop() {
                 int nextCheck = doc["nextCheck"]; // 0
                 int nextStop = doc["nextStop"]; // 0
                 int totalCheck = doc["totalCheck"]; // 0
+                if(runStatus > 1) {
+                  USE_SERIAL.println(speed);
+                  ledcWrite(0,255);
+                  delay(500);
+                }
                 USE_SERIAL.println(speed);
                 ledcWrite(0,speed);
                 
